@@ -1,16 +1,13 @@
-# This is a sample Python script.
+import db_statement
+import jira_methods
+import time
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+errors = (db_statement.geterrors())
+for x in errors:
+    id_db = str(x[0])
+    component = x[2]
+    error_name = x[3]
+    print(x)
+    id_jira = jira_methods.create_task(id_db+' '+component+' '+error_name, component)
+    db_statement.seterrors(id_db, id_jira)
+    time.sleep(15)
